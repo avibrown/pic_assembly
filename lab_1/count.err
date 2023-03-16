@@ -1,0 +1,5 @@
+Warning[205] C:\USERS\AVI\DOCUMENTS\GITHUB\PIC_ASSEMBLY\LAB_1\COUNT.ASM 1 : Found directive in column 1. (LIST)
+Warning[205] C:\USERS\AVI\DOCUMENTS\GITHUB\PIC_ASSEMBLY\LAB_1\COUNT.ASM 2 : Found directive in column 1. (include)
+Warning[205] C:\USERS\AVI\DOCUMENTS\GITHUB\PIC_ASSEMBLY\LAB_1\COUNT.ASM 4 : Found directive in column 1. (__CONFIG)
+Warning[205] C:\USERS\AVI\DOCUMENTS\GITHUB\PIC_ASSEMBLY\LAB_1\COUNT.ASM 7 : Found directive in column 1. (org)
+Warning[205] C:\USERS\AVI\DOCUMENTS\GITHUB\PIC_ASSEMBLY\LAB_1\COUNT.ASM 50 : Found directive in column 1. (end)
