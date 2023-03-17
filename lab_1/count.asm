@@ -25,9 +25,10 @@ start:
 	movlw 0			; Load 0 into W register
 	movwf 0x22		; Move 0 into 0x22
 
+; ---------------------------------------------------------
+
 ; Loop through the binary number to count the number of 1s
 loop:
-
 	; Check if least significant bit of the binary number == 1
 	btfsc 0x20, 0		
 
@@ -46,5 +47,5 @@ loop:
 	; If not, continue the loop
 	goto loop
 
-; Otherwise, end the program
-end
+	; Otherwise, end the program
+	end
