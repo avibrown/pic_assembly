@@ -7,96 +7,119 @@
 	include	<P16f877.inc>
  __CONFIG _CP_OFF & _WDT_OFF & _BODEN_OFF & _PWRTE_OFF & _HS_OSC & _WRT_ENABLE_ON & _LVP_OFF & _DEBUG_OFF & _CPD_OFF
 
+; Define variables
+temp		EQU	0x20
+operand1	EQU 0x21
+operand2	EQU 0x22
+result		EQU 0x23
 
+org 	0x00
+goto 	reset
 
-; Targil 3, סעיף ג
+reset:
+	bcf STATUS,RP0		; Initialize ports A and D
+	bcf STATUS,RP1
+	clrf PORTA
+	clrf PORTD
+	bsf STATUS, RP0
+	movlw 0x06			; Setting as digital
+	movwf ADCON1
+	movlw 0xF3
+	; movlw 0xFF
+	movwf TRISA
+	clrf TRISD
+	bcf STATUS,RP0
 
-		org 	0x00
-Reset:
-		goto 	start
+set_switches:
+	; Set PORTA[2]
+	bsf PORTA, 2
+	
+	; Clear PORTA[3]
+	bsf PORTA, 3
 
-		org 	0x05
-start:
-		bcf STATUS,RP0		; Initialize ports A and D
-		bcf STATUS,RP1
-		clrf PORTA
-		clrf PORTD
-		bsf STATUS, RP0
-		movlw 0x06			; Setting as digital
-		movwf ADCON1
-		movlw 0x3F			; Setting as OUTPUT
-		movwf TRISA
-		clrf TRISD
-		bcf STATUS,RP0
+XNOR:
+	clrf operand1
+	clrf operand2
 
-		movlw 0x0
-		movwf PORTD			; Clear PORTD
+	btfsc PORTA, 2
+	bsf operand1, 0
 
-		movlw 0x0
-		movwf 0x20			; Temp
+	btfsc PORTA, 3
+	bsf operand2, 0
 
-check_switches:
-		; Clear PORTD
-		clrf PORTD
-		clrf W
+	movfw operand1
+	xorwf operand2, 0	; op
+	movwf result
 
-		; Move PA2 to temp 0
-		btfsc PORTA, 2
-		bsf 0x20, 0
+	btfss result, 0
+	bsf PORTD, 0
 
-		; Move PA3 to W
-		btfsc PORTA, 3
-		movlw 0x01
+NAND:
+	clrf operand1
+	clrf operand2
 
-set_leds:
-		; NXOR
-		xorwf 0x20, 0
-		btfss W, 0
-		bsf PORTD, 0
-		clrf W
-		btfsc PORTA, 3
-		movlw 0x01
+	btfsc PORTA, 2
+	bsf operand1, 0
 
-		; NAND
-		andwf 0x20, 0
-		btfss W, 0
-		bsf PORTD, 1
-		clrf W
-		btfsc PORTA, 3
-		movlw 0x01
+	btfsc PORTA, 3
+	bsf operand2, 0
 
-		; NOR
-		addwf 0x20, 0
-		btfss W, 0
-		bsf PORTD, 2
-		clrf W
-		btfsc PORTA, 3
-		movlw 0x01
+	movfw operand1
+	andwf operand2, 0	; op
+	movwf result
 
-		; OR
-		addwf 0x20, 0
-		btfsc W, 0
-		bsf PORTD, 3
-		clrf W
-		btfsc PORTA, 3
-		movlw 0x01
+	btfss result, 0
+	bsf PORTD, 1
 
-		; AND
-		andwf 0x20, 0
-		btfsc W, 0
-		bsf PORTD, 4
-		clrf W
-		btfsc PORTA, 3
-		movlw 0x01
+NOR:
+	clrf operand1
+	clrf operand2
 
-		; XOR
-		xorwf 0x20, 0
-		btfsc W, 0
-		bsf PORTD, 5
-		clrf W
-		btfsc PORTA, 3
-		movlw 0x01
+	btfsc PORTA, 2
+	bsf operand1, 0
 
-		goto check_switches
+	btfsc PORTA, 3
+	bsf operand2, 0
 
+	movfw operand1
+	addwf operand2, 0	; op
+	movwf result
+
+	btfss result, 0
+	bsf PORTD, 2
+
+OR:
+	clrf operand1
+	clrf operand2
+
+	btfsc PORTA, 2
+	bsf operand1, 0
+
+	btfsc PORTA, 3
+	bsf operand2, 0
+
+	movfw operand1
+	addwf operand2, 0	; op
+	movwf result
+
+	btfsc result, 0
+	bsf PORTD, 3
+
+AND:
+	clrf operand1
+	clrf operand2
+
+	btfsc PORTA, 2
+	bsf operand1, 0
+
+	btfsc PORTA, 3
+	bsf operand2, 0
+
+	movfw operand1
+	andwf operand2, 0	; op
+	movwf result
+
+	btfsc result, 0
+	bsf PORTD, 4
+	
 end
