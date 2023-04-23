@@ -8,7 +8,6 @@
  __CONFIG _CP_OFF & _WDT_OFF & _BODEN_OFF & _PWRTE_OFF & _HS_OSC & _WRT_ENABLE_ON & _LVP_OFF & _DEBUG_OFF & _CPD_OFF
 
 ; Define variables
-temp		EQU	0x20
 operand1	EQU 0x21
 operand2	EQU 0x22
 result		EQU 0x23
