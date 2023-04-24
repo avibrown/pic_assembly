@@ -41,11 +41,11 @@ increment:
 		incf PORTD, 1		; Increment LED bar
 
  		movlw   0x05
-	    movwf   0x31
+	    	movwf   0x31
 
 delay:		
 		decfsz  0x31
-	    goto    delay
+	    	goto    delay
 		
 		btfss PORTA, 5
 		goto increment
